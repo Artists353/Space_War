@@ -1,24 +1,19 @@
-import pygame
-
-from pygame.sprite import Sprite
-
-class Bullet(Sprite):
+class GameStats:
+    """Track statistics for Alien Invasion."""
+    
     def __init__(self, ai_game):
-        super().__init__()
-        self.screen = ai_game.screen
+        """Initialize statistics."""
         self.settings = ai_game.settings
-        self.color = self.settings.bullet_bg_color
-        self.speed = self.settings.bullet_speed
+        self.reset_stats()
 
+        # Start game in an inactive state.
+        self.game_active = False
 
-        self.rect = pygame.Rect(0, 0, self.settings.bullet_wight, self.settings.bullet_height)
-        self.rect.midtop = ai_game.ship.rect.midtop
-
-        self.y = float(self.rect.y)
-
-    def _update(self):
-        self.y -= self.speed
-        self.rect.y = self.y
-
-    def draw_bullet(self):
-        pygame.draw.rect(self.screen, self.color, self.rect)
+        # High score should never be reset.
+        self.high_score = 0
+        
+    def reset_stats(self):
+        """Initialize statistics that can change during the game."""
+        self.ships_left = self.settings.ship_limit
+        self.score = 0
+        self.level = 1
